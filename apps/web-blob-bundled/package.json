@@ -1,16 +1,20 @@
 {
-  "name": "docs",
+  "name": "web-blob-bundled",
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --port 3001",
+    "bundle:netlify-blobs": "deno bundle https://unpkg.com/@netlify/blobs@7.0.1/dist/main.js netlify/edge-functions/_bundles/netlify-blobs.js",
+    "postinstall": "pnpm run bundle:netlify-blobs",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint . --max-warnings 0"
   },
   "dependencies": {
-    "@repo/ui": "workspace:*",
-    "next": "^14.1.1",
+    "@netlify/blobs": "^7.0.1",
+    "@netlify/edge-functions": "^2.3.1",
+    "@netlify/functions": "^2.6.0",
+    "next": "^13",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

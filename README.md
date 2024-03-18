@@ -1,81 +1,29 @@
-# Turborepo starter
+# Netlify Bobs issue with Turborepo
 
-This is an official starter Turborepo.
+Netlify build fails when using the [@netlify/blobs](https://github.com/netlify/blobs) package in a monorepo setup with [Turborepo](https://turbo.build/repo).
 
-## Using this example
+> Netlify blobs is currently, as of version 7.0.1, in Beta. So, it is understandble that it might not work with all setups.
 
-Run the following command:
+## The issue
 
-```sh
-npx create-turbo@latest
+When using the `@netlify/blobs` package in a monorepo setup with Turborepo, the build (deploy to Netlify) fails with the following error:
+
+```bash
+9:14:55 AM: Packaging Edge Functions from apps/web-blob-hoisted/netlify/edge-functions directory:
+9:14:55 AM:  - get-blob-data
+9:14:56 AM: Failed during stage "building site": Build script returned non-zero exit code: 2
+9:14:56 AM: ✘ [ERROR] Could not resolve "@netlify/blobs"
+9:14:56 AM:     ../../../tmp/tmp-5466-8dBcPDS61CTp/bundled-netlify__blobs.js:1:21:
+9:14:56 AM:       1 │ import * as mod from "@netlify/blobs"; export default mod.default; ...
+9:14:56 AM:         ╵                      ~~~~~~~~~~~~~~~~
+9:14:56 AM:   You can mark the path "@netlify/blobs" as external to exclude it from the bundle, which will remove this error and leave the unresolved path in the bundle.
 ```
 
-## What's inside?
+## Possible solution
 
-This Turborepo includes the following packages/apps:
+The issue is that the `@netlify/blobs` package is not being resolved correctly. This is because the package is not being hoisted to the root `node_modules` directory.
 
-### Apps and Packages
+Ways to solve this issue:
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm build
-```
-
-### Develop
-
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm dev
-```
-
-### Remote Caching
-
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-npx turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+1. Bundle the `@netlify/blobs` package with the build. See: [web-blob-bundled](apps/web-blob-bundled)
+2. Install the `@netlify/blobs` package in the root `node_modules` directory. See: [web-blob-hoisted](apps/web-blob-hoisted)

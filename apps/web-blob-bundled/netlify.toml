@@ -1,0 +1,12 @@
+[[plugins]]
+package = "@netlify/plugin-nextjs"
+
+[dev]
+targetPort = 3000
+command = "pnpm run dev:web-blob-bundled"
+edge_functions = "apps/web-blob-bundled/netlify/edge-functions"
+
+[build]
+publish = "apps/web-blob-bundled/.next"
+command = "pnpm run build:web-blob-bundled"
+edge_functions = "apps/web-blob-bundled/netlify/edge-functions"

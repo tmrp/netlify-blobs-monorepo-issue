@@ -2,8 +2,11 @@
   "name": "netlify-blobs-monorepo-issue",
   "private": true,
   "scripts": {
-    "build": "turbo build",
+    "build:web-blob-bundled": "turbo build --filter=web-blob-bundled",
+    "build:web-blob-hoisted": "turbo build --filter=web-blob-hoisted",
     "dev": "turbo dev",
+    "dev:web-blob-bundled": "turbo dev --filter=web-blob-bundled",
+    "dev:web-blob-hoisted": "turbo dev --filter=web-blob-hoisted",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
@@ -16,5 +19,8 @@
   "packageManager": "pnpm@8.9.0",
   "engines": {
     "node": ">=18"
+  },
+  "dependencies": {
+    "@netlify/blobs": "^7.0.1"
   }
 }
